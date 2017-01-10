@@ -23,7 +23,7 @@ int main(){
     srand(time(NULL));
     int i,j;
     int winWhite = 0,winBlack = 0;
-    for(int tranning = 1;tranning <= 1;tranning ++){
+    for(int tranning = 1;tranning <= 5;tranning ++){
         for (i = 0; i < 8; i++) {
             for (j = 0; j < 8; j++) {
                 status[i][j] = 0;
@@ -70,9 +70,9 @@ int main(){
                     std::cout<<"\033[1;32m"<<i<<"\033[0m ";
                     for (j = 0; j < 8; j++) {
                         //fout << status[i][j];
-                        if(status[i][j] == 1){
+                        if(status[i][j] == 2){
                             std::cout<<"○ ";
-                        }else if(status[i][j] == 2){
+                        }else if(status[i][j] == 1){
                             std::cout<<"● ";
                         }else {
                             std::cout << "□ ";
@@ -104,14 +104,14 @@ int main(){
                 if (noNext) {
                     break;
                 }
-                do{
+                /*do{
                     std::cout<<"input where you want to input like 2 1" << std::endl;
                     scanf("%d %d",&directionX,&directionY);
-                }while(Blacks[directionX][directionY]!=1);
-                /*do {
-                 directionX = rand() % 6 + 0;
-                 directionY = rand() % 6 + 0;
-                 } while (Blacks[directionX][directionY] != 1);*/
+                }while(Blacks[directionX][directionY]!=1);*/
+                do {
+                 directionX = rand() % 8 + 0;
+                 directionY = rand() % 8 + 0;
+                 } while (Blacks[directionX][directionY] != 1);
                 doBlackToStatus(directionX, directionY,status);
                 std::cout << "nb" << directionX << directionY << std::endl;
                 //oss << "nb" << directionX <<directionY << " ";
@@ -125,9 +125,9 @@ int main(){
                     std::cout<<"\033[1;32m"<<i<<"\033[0m ";
                     for (j = 0; j < 8; j++) {
                         //fout << status[i][j];
-                        if(status[i][j] == 1){
+                        if(status[i][j] == 2){
                             std::cout<<"○ ";
-                        }else if(status[i][j] == 2){
+                        }else if(status[i][j] == 1){
                             std::cout<<"● ";
                         }else {
                             std::cout << "□ ";
@@ -142,9 +142,9 @@ int main(){
         int sumWhite = 0, sumBlack = 0;
         for (i = 0; i < 8; i++) {
             for (j = 0; j <8; j++) {
-                if (status[i][j] == 1) {
+                if (status[i][j] == 2) {
                     sumWhite++;
-                } else if (status[i][j] == 2) {
+                } else if (status[i][j] == 1) {
                     sumBlack++;
                 }
             }
@@ -195,7 +195,7 @@ int doWhiteIntelligence(){
     if (noNext) {
         return -1;
     }
-    node* nodes = new node[10000000];
+    node* nodes = new node[100000000];
     arrayToArray(nodes[0].status,nowStatus);
     nodes[0].index = 0;
     int lastLocat = 0,locat = 0;
@@ -693,25 +693,25 @@ void getAccessibleWhite(int stat[8][8],int Whites[8][8]){
             if(stat[i][j] == 0){
                 int k,v;
                 for(k = i - 2; k >= 0 ; k--){
-                    if(stat[k][j] == 1 && stat[i - 1][j] == 2){
+                    if(stat[k][j] == 1 && stat[i - 1][j] == 2 && stat[k+1][j] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
                 }
                 for(k = i + 2; k <= 7 ; k++){
-                    if(stat[k][j] == 1 && stat[i + 1][j] == 2){
+                    if(stat[k][j] == 1 && stat[i + 1][j] == 2 && stat[k - 1][j] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
                 }
                 for(v = j - 2; v >= 0; v--){
-                    if(stat[i][v] == 1 && stat[i][j - 1] == 2){
+                    if(stat[i][v] == 1 && stat[i][j - 1] == 2 && stat[i][v + 1] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
                 }
                 for(v = j + 2; v <= 7; v++){
-                    if(stat[i][v] == 1 && stat[i][j + 1] == 2){
+                    if(stat[i][v] == 1 && stat[i][j + 1] == 2 && stat[i][v - 1] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
@@ -719,7 +719,7 @@ void getAccessibleWhite(int stat[8][8],int Whites[8][8]){
                 k = i - 2;
                 v = j - 2;
                 while(k >= 0 && v >= 0){
-                    if(stat[k][v] == 1 && stat[i - 1][j - 1] == 2){
+                    if(stat[k][v] == 1 && stat[i - 1][j - 1] == 2 && stat[k+1][v+1] == 2 ){
                         Whites[i][j] = 1;
                         break;
                     }
@@ -729,7 +729,7 @@ void getAccessibleWhite(int stat[8][8],int Whites[8][8]){
                 k = i + 2;
                 v = j - 2;
                 while(k <= 7 && v >= 0){
-                    if(stat[k][v] == 1 && stat[i + 1][j - 1] == 2){
+                    if(stat[k][v] == 1 && stat[i + 1][j - 1] == 2 && stat[k-1][v+1] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
@@ -739,7 +739,7 @@ void getAccessibleWhite(int stat[8][8],int Whites[8][8]){
                 k = i - 2;
                 v = j + 2;
                 while(k >= 0 && v <= 7){
-                    if(stat[k][v] == 1 && stat[i - 1][j + 1] == 2){
+                    if(stat[k][v] == 1 && stat[i - 1][j + 1] == 2 && stat[k+1][v-1] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
@@ -749,7 +749,7 @@ void getAccessibleWhite(int stat[8][8],int Whites[8][8]){
                 k = i + 2;
                 v = j + 2;
                 while(k <= 7 && v <= 7){
-                    if(stat[k][v] == 1 && stat[i + 1][j + 1] == 2){
+                    if(stat[k][v] == 1 && stat[i + 1][j + 1] == 2 && stat[k-1][v-1] == 2){
                         Whites[i][j] = 1;
                         break;
                     }
@@ -766,25 +766,25 @@ void getAccessibleBlack(int stat[8][8],int Blacks[8][8]){
             if(stat[i][j] == 0){
                 int k,v;
                 for(k = i - 2; k >= 0 ; k--){
-                    if(stat[k][j] == 2 && stat[i - 1][j] == 1){
+                    if(stat[k][j] == 2 && stat[i - 1][j] == 1 && stat[k + 1][j] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
                 }
                 for(k = i + 2; k <= 7 ; k++){
-                    if(stat[k][j] == 2 && stat[i + 1][j] == 1){
+                    if(stat[k][j] == 2 && stat[i + 1][j] == 1 && stat[k-1][j] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
                 }
                 for(v = j - 2; v >= 0; v--){
-                    if(stat[i][v] == 2 && stat[i][j - 1] == 1){
+                    if(stat[i][v] == 2 && stat[i][j - 1] == 1 && stat[i][v+1] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
                 }
                 for(v = j + 2; v <= 7; v++){
-                    if(stat[i][v] == 2 && stat[i][j + 1] == 1){
+                    if(stat[i][v] == 2 && stat[i][j + 1] == 1 && stat[i][v - 1] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
@@ -792,7 +792,7 @@ void getAccessibleBlack(int stat[8][8],int Blacks[8][8]){
                 k = i - 2;
                 v = j - 2;
                 while(k >= 0 && v >= 0){
-                    if(stat[k][v] == 2 && stat[i - 1][j - 1] == 1){
+                    if(stat[k][v] == 2 && stat[i - 1][j - 1] == 1 && stat[k+1][v+1] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
@@ -802,7 +802,7 @@ void getAccessibleBlack(int stat[8][8],int Blacks[8][8]){
                 k = i + 2;
                 v = j - 2;
                 while(k <= 7 && v >= 0){
-                    if(stat[k][v] == 2 && stat[i + 1][j - 1] == 1){
+                    if(stat[k][v] == 2 && stat[i + 1][j - 1] == 1 && stat[k-1][v+1] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
@@ -812,7 +812,7 @@ void getAccessibleBlack(int stat[8][8],int Blacks[8][8]){
                 k = i - 2;
                 v = j + 2;
                 while(k >= 0 && v <= 7){
-                    if(stat[k][v] == 2 && stat[i - 1][j + 1] == 1){
+                    if(stat[k][v] == 2 && stat[i - 1][j + 1] == 1 && stat[k+1][v-1] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
@@ -822,7 +822,7 @@ void getAccessibleBlack(int stat[8][8],int Blacks[8][8]){
                 k = i + 2;
                 v = j + 2;
                 while(k <= 7 && v <= 7){
-                    if(stat[k][v] == 2 && stat[i + 1][j + 1] == 1){
+                    if(stat[k][v] == 2 && stat[i + 1][j + 1] == 1 && stat[k-1][v-1] == 1){
                         Blacks[i][j] = 1;
                         break;
                     }
@@ -837,7 +837,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
     int k,v;
     stat[directionX][directionY] = 1;
     for(k = directionX - 2; k >= 0 ; k--){
-        if(stat[k][directionY] == 1 && stat[directionX - 1][directionY] == 2){
+        if(stat[k][directionY] == 1 && stat[directionX - 1][directionY] == 2 && stat[k + 1][directionY] == 2){
             for(int x = directionX - 1 ; x >= k + 1; x--){
                 stat[x][directionY] = 1;
             }
@@ -845,7 +845,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
         }
     }
     for(k = directionX + 2; k <= 7 ; k++){
-        if(stat[k][directionY] == 1 && stat[directionX + 1][directionY] == 2){
+        if(stat[k][directionY] == 1 && stat[directionX + 1][directionY] == 2 && stat[k - 1][directionY] == 2){
             for(int x = directionX + 1 ; x <= k - 1 ; x++){
                 stat[x][directionY] = 1;
             }
@@ -853,7 +853,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
         }
     }
     for(v = directionY - 2; v >= 0; v--){
-        if(stat[directionX][v] == 1 && stat[directionX][directionY - 1] == 2){
+        if(stat[directionX][v] == 1 && stat[directionX][directionY - 1] == 2 && stat[directionX][v + 1] == 2){
             for(int x = directionY - 1 ; x >= v + 1; x--){
                 stat[directionX][x] = 1;
             }
@@ -861,7 +861,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
         }
     }
     for(v = directionY + 2; v <= 7; v++){
-        if(stat[directionX][v] == 1 && stat[directionX][directionY + 1] == 2){
+        if(stat[directionX][v] == 1 && stat[directionX][directionY + 1] == 2 && stat[directionX][v - 1] == 2){
             for(int x = directionY + 1 ; x <= v - 1; x++){
                 stat[directionX][x] = 1;
             }
@@ -871,7 +871,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX - 2;
     v = directionY - 2;
     while(k >= 0 && v >= 0){
-        if(stat[k][v] == 1 && stat[directionX - 1][directionY - 1] == 2){
+        if(stat[k][v] == 1 && stat[directionX - 1][directionY - 1] == 2&& stat[k+1][v+1] == 2){
             int x,y;
             x = directionX - 1;
             y = directionY - 1;
@@ -887,7 +887,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX + 2;
     v = directionY - 2;
     while(k <= 7 && v >= 0){
-        if(stat[k][v] == 1  && stat[directionX + 1][directionY - 1] == 2){
+        if(stat[k][v] == 1  && stat[directionX + 1][directionY - 1] == 2&& stat[k-1][v+1] == 2){
             int x,y;
             x = directionX + 1;
             y = directionY - 1;
@@ -904,7 +904,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX - 2;
     v = directionY + 2;
     while(k >= 0 && v <= 7){
-        if(stat[k][v] == 1  && stat[directionX - 1][directionY + 1] == 2){
+        if(stat[k][v] == 1  && stat[directionX - 1][directionY + 1] == 2&& stat[k+1][v-1] == 2){
             int x,y;
             x = directionX - 1;
             y = directionY + 1;
@@ -920,7 +920,7 @@ void doWhiteToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX + 2;
     v = directionY + 2;
     while(k <= 7 && v <= 7){
-        if(stat[k][v] == 1  && stat[directionX + 1][directionY + 1] == 2){
+        if(stat[k][v] == 1  && stat[directionX + 1][directionY + 1] == 2 && stat[k-1][v-1] == 2){
             int x,y;
             x = directionX + 1;
             y = directionY + 1;
@@ -939,7 +939,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
     int k,v;
     stat[directionX][directionY] = 2;
     for(k = directionX - 2; k >= 0 ; k--){
-        if(stat[k][directionY] == 2 && stat[directionX - 1][directionY] == 1){
+        if(stat[k][directionY] == 2 && stat[directionX - 1][directionY] == 1 && stat[k + 1][directionY] == 1){
             for(int x = directionX - 1 ; x >= k + 1 ; x--){
                 stat[x][directionY] = 2;
             }
@@ -947,7 +947,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
         }
     }
     for(k = directionX + 2; k <= 7 ; k++){
-        if(stat[k][directionY] == 2 && stat[directionX + 1][directionY] == 1){
+        if(stat[k][directionY] == 2 && stat[directionX + 1][directionY] == 1 && stat[k - 1][directionY] == 1){
             for(int x = directionX + 1 ; x <= k - 1; x++){
                 stat[x][directionY] = 2;
             }
@@ -955,7 +955,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
         }
     }
     for(v = directionY - 2; v >= 0; v--){
-        if(stat[directionX][v] == 2 && stat[directionX][directionY - 1] == 1){
+        if(stat[directionX][v] == 2 && stat[directionX][directionY - 1] == 1 && stat[directionX][v+1] == 1){
             for(int x = directionY - 1 ; x >= v + 1; x--){
                 stat[directionX][x] = 2;
             }
@@ -963,7 +963,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
         }
     }
     for(v = directionY + 2; v <= 7; v++){
-        if(stat[directionX][v] == 2 && stat[directionX][directionY + 1] == 1){
+        if(stat[directionX][v] == 2 && stat[directionX][directionY + 1] == 1 && stat[directionX][v-1] == 1){
             for(int x = directionY + 1 ; x <= v - 1; x++){
                 stat[directionX][x] = 2;
             }
@@ -973,7 +973,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX - 2;
     v = directionY - 2;
     while(k >= 0 && v >= 0){
-        if(stat[k][v] == 2 && stat[directionX - 1][directionY - 1] == 1){
+        if(stat[k][v] == 2 && stat[directionX - 1][directionY - 1] == 1 && stat[k+1][v+1] == 1){
             int x,y;
             x = directionX - 1;
             y = directionY - 1;
@@ -989,7 +989,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX + 2;
     v = directionY - 2;
     while(k <= 7 && v >= 0){
-        if(stat[k][v] == 2  && stat[directionX + 1][directionY - 1] == 1){
+        if(stat[k][v] == 2  && stat[directionX + 1][directionY - 1] == 1 && stat[k-1][v+1] == 1){
             int x,y;
             x = directionX + 1;
             y = directionY - 1;
@@ -1006,7 +1006,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX - 2;
     v = directionY + 2;
     while(k >= 0 && v <= 7){
-        if(stat[k][v] == 2  && stat[directionX - 1][directionY + 1] == 1){
+        if(stat[k][v] == 2  && stat[directionX - 1][directionY + 1] == 1 && stat[k+1][v-1] == 1){
             int x,y;
             x = directionX - 1;
             y = directionY + 1;
@@ -1022,7 +1022,7 @@ void doBlackToStatus(int directionX,int directionY,int stat[8][8]){
     k = directionX + 2;
     v = directionY + 2;
     while(k <= 7 && v <= 7){
-        if(stat[k][v] == 2  && stat[directionX + 1][directionY + 1] == 1){
+        if(stat[k][v] == 2  && stat[directionX + 1][directionY + 1] == 1 && stat[k-1][v-1] == 1){
             int x,y;
             x = directionX + 1;
             y = directionY + 1;
